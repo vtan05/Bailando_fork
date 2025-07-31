@@ -49,7 +49,7 @@ class MoQ():
         log = Logger(self.config, self.expdir)
         updates = 0
         
-        if hasattr(config, 'init_weight') and config.init_weight is not None and config.init_weight is not '':
+        if hasattr(config, 'init_weight') and config.init_weight is not None and config.init_weight != '':
             print('Use pretrained model!')
             print(config.init_weight)  
             checkpoint = torch.load(config.init_weight)
@@ -84,7 +84,7 @@ class MoQ():
 
                 else:
                     pose_seq[:, :, :3] = 0
-                # print(pose_seq.size())
+                print(pose_seq.size())
                 optimizer.zero_grad()
 
                 output, loss, metrics = model(pose_seq)
@@ -460,7 +460,7 @@ class MoQ():
                 data.train_dir, interval=data.seq_len, move=self.config.move_train if hasattr(self.config, 'move_train') else 64, rotmat=self.config.rotmat)
         else:
             train_music_data, train_dance_data = load_data(
-                args_train.train_dir, 
+                data.train_dir,
                 interval=data.seq_len,
                 data_type=data.data_type)
         self.training_data = prepare_dataloader(train_music_data, train_dance_data, self.config.batch_size)
@@ -477,7 +477,7 @@ class MoQ():
         
         else:    
             music_data, dance_data, dance_names = load_test_data(
-                data.test_dir, interval=None)
+                data.test_dir, data_type=data.data_type)
 
         #pdb.set_trace()
 

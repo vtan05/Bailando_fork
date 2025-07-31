@@ -79,7 +79,7 @@ def read_keypoints(json_input, size, random_drop_prob=0, remove_face_labels=Fals
     w, h = size    
     pose_img = np.zeros((h, w, 3), np.uint8)
     for keypoint_dict in keypoint_dicts:    
-        pose_pts = np.array(keypoint_dict["pose_keypoints_2d"]).reshape(25, 3)
+        pose_pts = np.array(keypoint_dict["pose_keypoints_2d"]).reshape(21, 3)
         # face_pts = np.array(keypoint_dict["face_keypoints_2d"]).reshape(70, 3)
         face_pts = np.zeros(210).reshape(70, 3)
         # hand_pts_l = np.array(keypoint_dict["hand_left_keypoints_2d"]).reshape(21, 3)
@@ -212,12 +212,19 @@ def define_edge_lists(basic_point_only):
         pose_edge_list += [[17, 15], [15,  0], [ 0, 16], [16, 18]]       # head
         pose_color_list += [[153,  0,153], [153,  0,102], [102,  0,153], [ 51,  0,153]]
 
-    pose_edge_list += [        
-        [ 0,  1], [ 1,  8],                                         # body
-        [ 1,  2], [ 2,  3], [ 3,  4],                               # right arm
-        [ 1,  5], [ 5,  6], [ 6,  7],                               # left arm
-        [ 8,  9], [ 9, 10], [10, 11], [11, 24], [11, 22], [22, 23], # right leg
-        [ 8, 12], [12, 13], [13, 14], [14, 21], [14, 19], [19, 20]  # left leg
+    # pose_edge_list += [        
+    #     [ 0,  1], [ 1,  8],                                         # body
+    #     [ 1,  2], [ 2,  3], [ 3,  4],                               # right arm
+    #     [ 1,  5], [ 5,  6], [ 6,  7],                               # left arm
+    #     [ 8,  9], [ 9, 10], [10, 11], [11, 24], [11, 22], [22, 23], # right leg
+    #     [ 8, 12], [12, 13], [13, 14], [14, 21], [14, 19], [19, 20]  # left leg
+    # ]
+    pose_edge_list += [
+        [0, 1], [1, 4], [4, 7], [7, 9],         # left leg: pelvis → hip → knee → ankle → foot
+        [0, 2], [2, 5], [5, 8], [8,10],         # right leg: pelvis → hip → knee → ankle → foot
+        [0, 3], [3, 6], [6,11], [11,14],        # spine: pelvis → spine1 → spine2 → neck → head
+        [11,12], [12,15], [15,17], [17,19],     # left arm: neck → collar → shoulder → elbow → wrist
+        [11,13], [13,16], [16,18], [18,20]      # right arm: neck → collar → shoulder → elbow → wrist
     ]
     pose_color_list += [
         [153,  0, 51], [153,  0,  0],

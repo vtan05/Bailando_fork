@@ -1,6 +1,7 @@
 import numpy as np
 import torch as t
 import torch.nn as nn
+import torch.nn.functional as F
 
 from .encdec import Encoder, Decoder, assert_shape
 from .bottleneck import NoBottleneck, Bottleneck
@@ -111,7 +112,7 @@ class VQVAE(nn.Module):
         self.reg = hps.reg if hasattr(hps, 'reg') else 0
         self.acc = hps.acc if hasattr(hps, 'acc') else 0
         self.vel = hps.vel if hasattr(hps, 'vel') else 0
-        if self.reg is 0:
+        if self.reg == 0:  
             print('No motion regularization!')
         # self.spectral = spectral
         # self.multispectral = multispectral
@@ -194,6 +195,12 @@ class VQVAE(nn.Module):
         for level in range(self.levels):
             decoder = self.decoders[level]
             x_out = decoder(xs_quantised[level:level+1], all_levels=False)
+            expected_len = x_in.shape[-1]
+            if x_out.shape[-1] > expected_len:
+                x_out = x_out[:, :, :expected_len]
+            elif x_out.shape[-1] < expected_len:
+                pad_amt = expected_len - x_out.shape[-1]
+                x_out = F.pad(x_out, (0, pad_amt))
             assert_shape(x_out, x_in.shape)
             x_outs.append(x_out)
 

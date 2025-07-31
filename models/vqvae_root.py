@@ -115,7 +115,7 @@ class VQVAER(nn.Module):
         self.reg = hps.reg if hasattr(hps, 'reg') else 0
         self.acc = hps.acc if hasattr(hps, 'acc') else 0
         self.vel = hps.vel if hasattr(hps, 'vel') else 0
-        if self.reg is 0:
+        if self.reg == 0:  
             print('No motion regularization!')
         # self.spectral = spectral
         # self.multispectral = multispectral

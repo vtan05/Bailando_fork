@@ -9,9 +9,22 @@ import torch.nn as nn
 
 from .vqvae import VQVAE
 
+#### AIST
+# smpl_down = [0, 1, 2, 4,  5, 7, 8, 10, 11]
+# smpl_up = [3, 6, 9, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
-smpl_down = [0, 1, 2, 4,  5, 7, 8, 10, 11]
-smpl_up = [3, 6, 9, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+#### Finedance
+smpl_down = [
+    0,               # pelvis
+    1, 4, 7, 9,      # left leg: hip, knee, ankle, foot
+    2, 5, 8,10       # right leg: hip, knee, ankle, foot
+]
+
+smpl_up = [
+    3, 6, 11, 14,          # spine1, spine2, neck, head
+    12, 15, 17, 19,        # left collar, shoulder, elbow, wrist
+    13, 16, 18, 20         # right collar, shoulder, elbow, wrist
+]
 
 # def dont_update(params):
 #     for param in params:
