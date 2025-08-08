@@ -67,7 +67,7 @@ optimizer:
         gamma: 0.1
 # schedular: []
 data:
-    name: finedance   
+    name: aist   
     train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
     test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
     seq_len: 240
@@ -80,8 +80,8 @@ testing:
 expname: sep_vqvae
 epoch: 500
 batch_size: 32
-save_per_epochs: 1
-test_freq: 1
+save_per_epochs: 100
+test_freq: 100
 log_per_updates: 1
 seed: 42
 rotmat: False

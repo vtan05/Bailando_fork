@@ -159,6 +159,7 @@ class MoQ():
                                 quants[self.dance_names[i_eval]] = model.module.encode(src_pos_eval)[0].cpu().data.numpy()[0]
                         else:
                             quants = None
+                    print("Quants", quants.keys())
                     visualizeAndWrite(results, config,self.visdir, self.dance_names, epoch_i, quants)
                 model.train()
             self.schedular.step()  
@@ -507,7 +508,7 @@ class MoQ():
     def _dir_setting(self):
         data = self.config.data
         self.expname = self.config.expname
-        self.experiment_dir = os.path.join("./", "experiments")
+        self.experiment_dir = "/data/van/Dance/Bailando_new/experiments"
         self.expdir = os.path.join(self.experiment_dir, self.expname)
 
         if not os.path.exists(self.expdir):

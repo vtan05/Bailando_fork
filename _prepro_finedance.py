@@ -26,7 +26,7 @@ from pytorch3d.transforms.rotation_conversions import (axis_angle_to_matrix, mat
 parser = argparse.ArgumentParser()
 parser.add_argument('--motion_dir', '-orig', default=r"/data/van/Dance/Bailando_new/data/finedance/motion/",
                     help="Path where original motion files (in npy format) are stored")
-parser.add_argument('--dest_dir', '-dest', default=r"/data/van/Dance/Bailando_new/data/finedance/features",
+parser.add_argument('--dest_dir', '-dest', default=r"/data/van/Dance/Bailando_new/data/finedance/features_22joints",
                     help="Path where extracted motion features will be stored")
 parser.add_argument('--music_dir', type=str, default=r"/data/van/Dance/Bailando_new/data/finedance/music_wav",
                     help="Path to music .wav files")
@@ -96,18 +96,31 @@ def process_motion(motion_path):
     # Step 5: Forward kinematics (full 52-joint output)
     positions = smplx_model.forward(local_q_156, root_pos)     # [T, 52, 3]
 
-    # Step 6: Extract only 21 FineDance joints
-    smplx_to_21 = [
+    # Step 6: Extract only 22 FineDance joints
+    smplx_to_22 = [
         0,             # pelvis
         1, 4, 7, 10,   # left hip, knee, ankle, foot
         2, 5, 8, 11,   # right hip, knee, ankle, foot
-        3, 6,          # spine1, spine2
+        3, 6, 9,       # spine1, spine2, spine3
         12, 15,        # neck, head
         13, 14,        # left_collar, right_collar
         16, 18, 20,    # left shoulder, elbow, wrist
         17, 19, 21     # right shoulder, elbow, wrist
     ]
-    positions = positions[:, smplx_to_21, :]         # [T, 21, 3]
+
+    # just for reference since the 21 joints remove index 9 (DO NOT USE)
+    # smplx_to_21 = [
+    #     0,             # pelvis
+    #     1, 4, 7, 9,   # left hip, knee, ankle, foot
+    #     2, 5, 8, 10,   # right hip, knee, ankle, foot
+    #     3, 6,             # spine1, spine2, spine3
+    #     11, 14,        # neck, head
+    #     12, 13,        # left_collar, right_collar
+    #     15, 17, 19,    # left shoulder, elbow, wrist
+    #     16, 18, 20     # right shoulder, elbow, wrist
+    # ]
+
+    positions = positions[:, smplx_to_22, :]         # [T, 22, 3]
     positions = positions.reshape(positions.shape[0], -1)  # [T, 63]
     return positions.numpy()
 

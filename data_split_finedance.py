@@ -38,6 +38,6 @@ def copy_files(source_dir, output_dir):
             shutil.copy(src, dst)
 
 if __name__ == "__main__":
-    source_directory = "/data/van/Dance/Bailando_new/data/finedance/features"          # Replace with your source data directory
+    source_directory = "/data/van/Dance/Bailando_new/data/finedance/features_22joints"          # Replace with your source data directory
     output_directory = "/data/van/Dance/Bailando_new/data/finedance/data_split"  # Replace with your target directory
     copy_files(source_directory, output_directory)
