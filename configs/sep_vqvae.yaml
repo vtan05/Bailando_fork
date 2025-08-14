@@ -80,8 +80,8 @@ testing:
 expname: sep_vqvae
 epoch: 500
 batch_size: 32
-save_per_epochs: 100
-test_freq: 100
+save_per_epochs: 125
+test_freq: 125
 log_per_updates: 1
 seed: 42
 rotmat: False

@@ -600,7 +600,8 @@ def load_data_aist(data_dir, interval=120, move=40, rotmat=False, external_wav=N
             np_music = np.array(sample_dict['music_array'])
 
             if external_wav is not None:
-                wav_path = os.path.join(external_wav, fname.split('_')[-2] + '.json')
+                # wav_path = os.path.join(external_wav, fname.split('_')[-2] + '.json') ## AIST++ use json to store wav
+                wav_path = os.path.join(external_wav, fname[:-5] + '.json')
                 # print('load from external wav!')
                 with open(wav_path) as ff:
                     sample_dict_wav = json.loads(ff.read())
@@ -728,7 +729,8 @@ def load_test_data_aist(data_dir, rotmat, move, external_wav=None, external_wav_
             np_music = np.array(sample_dict['music_array'])
             if external_wav is not None:
                 # print('load from external wav!')
-                wav_path = os.path.join(external_wav, fname.split('_')[-2] + '.json')
+                # wav_path = os.path.join(external_wav, fname.split('_')[-2] + '.json')
+                wav_path = os.path.join(external_wav, fname[:-5] + '.json')
                 with open(wav_path) as ff:
                     sample_dict_wav = json.loads(ff.read())
                     np_music = np.array(sample_dict_wav['music_array'])

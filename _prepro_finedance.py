@@ -26,7 +26,7 @@ from pytorch3d.transforms.rotation_conversions import (axis_angle_to_matrix, mat
 parser = argparse.ArgumentParser()
 parser.add_argument('--motion_dir', '-orig', default=r"/data/van/Dance/Bailando_new/data/finedance/motion/",
                     help="Path where original motion files (in npy format) are stored")
-parser.add_argument('--dest_dir', '-dest', default=r"/data/van/Dance/Bailando_new/data/finedance/features_22joints",
+parser.add_argument('--dest_dir', '-dest', default=r"/data/van/Dance/Bailando_new/data/finedance/features_22jointsv2",
                     help="Path where extracted motion features will be stored")
 parser.add_argument('--music_dir', type=str, default=r"/data/van/Dance/Bailando_new/data/finedance/music_wav",
                     help="Path to music .wav files")
@@ -98,14 +98,28 @@ def process_motion(motion_path):
 
     # Step 6: Extract only 22 FineDance joints
     smplx_to_22 = [
-        0,             # pelvis
-        1, 4, 7, 10,   # left hip, knee, ankle, foot
-        2, 5, 8, 11,   # right hip, knee, ankle, foot
-        3, 6, 9,       # spine1, spine2, spine3
-        12, 15,        # neck, head
-        13, 14,        # left_collar, right_collar
-        16, 18, 20,    # left shoulder, elbow, wrist
-        17, 19, 21     # right shoulder, elbow, wrist
+        0,   # pelvis
+        1,   # left_hip
+        2,   # right_hip
+        3,   # spine1
+        4,   # left_knee
+        5,   # right_knee
+        6,   # spine2
+        7,   # left_ankle
+        8,   # right_ankle
+        9,   # spine3
+        10,  # left_foot
+        11,  # right_foot
+        12,  # neck
+        13,  # left_collar
+        14,  # right_collar
+        15,  # head
+        16,  # left_shoulder
+        17,  # right_shoulder
+        18,  # left_elbow
+        19,  # right_elbow
+        20,  # left_wrist
+        21   # right_wrist
     ]
 
     # just for reference since the 21 joints remove index 9 (DO NOT USE)

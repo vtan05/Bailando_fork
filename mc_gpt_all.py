@@ -536,7 +536,7 @@ class MCTall():
     def _dir_setting(self):
         data = self.config.data
         self.expname = self.config.expname
-        self.experiment_dir = os.path.join("./", "experiments")
+        self.experiment_dir = '/data/van/Dance/Bailando_new/experiments/'
         self.expdir = os.path.join(self.experiment_dir, self.expname)
 
         if not os.path.exists(self.expdir):
