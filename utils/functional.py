@@ -125,7 +125,8 @@ def img2video(expdir, epoch, audio_path=None):
 
 
     dance_names = sorted(os.listdir(image_dir))
-    audio_dir = "/data/van/Dance/Bailando_new/data/finedance/music_wav"
+    # audio_dir = "/data/van/Dance/Bailando_new/data/finedance/music_wav"
+    audio_dir = "/data/van/Dance/Bailando_new/data/motorica/wav"
     
     music_names = sorted(os.listdir(audio_dir))
     
@@ -483,7 +484,8 @@ def visualizeAndWrite(results,config,expdir,dance_names, epoch, quants=None):
             # np_dance_trans[:, 23] = np_dance2[:, 10]
             # np_dance_trans[:, 24] = np_dance2[:, 7]
 
-            # Visual 2D skeleton keypoints
+            ###########################################################
+            # Visual 2D skeleton keypoints (Finedanceee)
             np_dance_trans[:, 0]  = np_dance2[:, 12]  # neck
             np_dance_trans[:, 1]  = np_dance2[:, 9]   # chest 
 
@@ -525,6 +527,51 @@ def visualizeAndWrite(results,config,expdir,dance_names, epoch, quants=None):
             np_dance_trans[:, 22] = np_dance2[:, 10]   # lfoot
             np_dance_trans[:, 23] = np_dance2[:, 10]   # lfoot
             np_dance_trans[:, 24] = np_dance2[:, 7]   # lankle
+
+            ###########################################################
+            # # Visual 2D skeleton keypoints (Motorica)
+            # np_dance_trans[:, 0]  = np_dance2[:, 3]  # neck
+            # np_dance_trans[:, 1]  = np_dance2[:, 3]   # chest 
+
+            # # left arm
+            # np_dance_trans[:, 2]  = np_dance2[:, 13]  # lshoulder
+            # np_dance_trans[:, 3]  = np_dance2[:, 17]  # lelbow
+            # np_dance_trans[:, 4]  = np_dance2[:, 18]  # lwrist
+
+            # # right arm
+            # np_dance_trans[:, 5]  = np_dance2[:, 11]  # rshoulder
+            # np_dance_trans[:, 6]  = np_dance2[:, 13]  # relbow
+            # np_dance_trans[:, 7]  = np_dance2[:, 14]  # rwrist
+
+            # # root
+            # np_dance_trans[:, 8]  = np_dance2[:, 0]   # pelvis/root
+
+            # # left leg
+            # np_dance_trans[:, 9]  = np_dance2[:, 8]   # lhip
+            # np_dance_trans[:, 10] = np_dance2[:, 9]   # lknee
+            # np_dance_trans[:, 11] = np_dance2[:, 10]   # lankle
+
+            # # right leg
+            # np_dance_trans[:, 12] = np_dance2[:, 5]   # rhip
+            # np_dance_trans[:, 13] = np_dance2[:, 6]   # rknee
+            # np_dance_trans[:, 14] = np_dance2[:, 7]   # rankle
+
+            # # repeated head (for visual extension)
+            # np_dance_trans[:, 15] = np_dance2[:, 4]  # head
+            # np_dance_trans[:, 16] = np_dance2[:, 4]  # head
+            # np_dance_trans[:, 17] = np_dance2[:, 4]  # head
+            # np_dance_trans[:, 18] = np_dance2[:, 4]  # head
+
+            # # right toes/foot repeated
+            # np_dance_trans[:, 19] = np_dance2[:, 7]  # rfoot
+            # np_dance_trans[:, 20] = np_dance2[:, 7]  # rfoot
+            # np_dance_trans[:, 21] = np_dance2[:, 7]   # rankle
+
+            # # left toes/foot repeated
+            # np_dance_trans[:, 22] = np_dance2[:, 10]   # lfoot
+            # np_dance_trans[:, 23] = np_dance2[:, 10]   # lfoot
+            # np_dance_trans[:, 24] = np_dance2[:, 10]   # lankle
+
 
             np_dances.append(np_dance_trans.reshape([b, 25*2]))
     else:
@@ -1026,7 +1073,7 @@ def npy2pkl(npy_file, pkl_root):
 #         np_dance = result
 
 #         root = np_dance[:, :3]
-#         # np_dance = np_dance + np.tile(root, (1, 22))
+#         # np_dance = np_dance + np.tile(root, (1, 19))
 #         np_dance[:, :3] = root
 #         np_dances_original.append(np_dance)
 
@@ -1037,7 +1084,7 @@ def npy2pkl(npy_file, pkl_root):
 #         # np_dance = np_dance.reshape([b, c//3, 3])
 #         # np_dance2 = np_dance[:, :, :2] / 2 - 0.5
 #         # np_dance2[:, :, 1] = np_dance2[:, :, 1]
-#         np_dance2 = np_dance.reshape(b, 22, 3)
+#         np_dance2 = np_dance.reshape(b, 19, 3)
 #         np_dance2[:, :, 1:] *= -1
 #         np_dance_trans = np.zeros([b, 19, 3]).copy()
         

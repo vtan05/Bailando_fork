@@ -94,8 +94,10 @@ optimizer:
 # schedular: []
 data:
     name: aist
-    train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
-    test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
+    # train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
+    # test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
+    train_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/train
+    test_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/test
     seq_len: 240
     data_type: None
 testing:
@@ -121,7 +123,7 @@ cuda: True
 global_vel: True
 ds_rate: 8
 move: 8
-external_wav: /data/van/Dance/Bailando_new/data/finedance/music_feat_7.5fps
+external_wav: /data/van/Dance/Bailando_new/data/motorica/music_feat_7.5fps
 external_wav_rate: 1
 # random_init_test: True
 music_normalize: False

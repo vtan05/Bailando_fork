@@ -103,6 +103,8 @@ class MoQ():
                 #if epoch_i % self.config.log_per_updates == 0:
                 log.update(stats)
                 updates += 1
+                trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+                print(f"Trainable parameters: {trainable_params}")
 
             checkpoint = {
                 'model': model.state_dict(),
@@ -508,7 +510,7 @@ class MoQ():
     def _dir_setting(self):
         data = self.config.data
         self.expname = self.config.expname
-        self.experiment_dir = "/data/van/Dance/Bailando_new/experiments"
+        self.experiment_dir = "/data/van/Dance/Bailando_new/experiments/"
         self.expdir = os.path.join(self.experiment_dir, self.expname)
 
         if not os.path.exists(self.expdir):

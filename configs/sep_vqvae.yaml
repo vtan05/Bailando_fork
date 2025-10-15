@@ -68,8 +68,10 @@ optimizer:
 # schedular: []
 data:
     name: aist   
-    train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
-    test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
+    # train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
+    # test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
+    train_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/train
+    test_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/test
     seq_len: 240
     data_type: None
 testing:

@@ -148,6 +148,8 @@ class MCTall():
                 'config': config,
                 'epoch': epoch_i
             }
+            trainable_params = sum(p.numel() for p in gpt.parameters() if p.requires_grad)
+            print(f"Trainable parameters: {trainable_params}")
 
             # # Save checkpoint
             if epoch_i % config.save_per_epochs == 0 or epoch_i == 1:

@@ -154,6 +154,8 @@ class AC():
             
             # 3. for each batch
             for batch_i, batch in enumerate(training_data):
+                if batch is None:
+                    continue  # Skip batches where all samples were empty
                 music_seq, pose_seq_up, pose_seq_down, beat_seq, mask_seq  = batch
                 music_seq = music_seq.to(self.device)[:, 1:] # music (1..29)
                 pose_seq_up = pose_seq_up.to(self.device)
@@ -246,6 +248,8 @@ class AC():
                 #if epoch_i % self.config.log_per_updates == 0:
                 log.update(stats)
                 updates += 1
+                trainable_params = sum(p.numel() for p in gpt.module.actor.parameters() if p.requires_grad)
+                print(f"Trainable parameters: {trainable_params}")
 
             checkpoint = {
                 'model': gpt.state_dict(),
@@ -432,6 +436,43 @@ class AC():
                     quants_out[self.dance_names[i_eval]] = tuple(zs[ii][0].cpu().data.numpy()[0] for ii in range(len(zs)))
                 else:
                     quants_out[self.dance_names[i_eval]] = zs[0].cpu().data.numpy()[0]
+            
+             # -------- parameter counting --------
+            from torch.nn.parameter import UninitializedParameter
+
+            def count_params_safe(model, trainable_only=False):
+                total, skipped = 0, 0
+                for p in model.parameters():
+                    if isinstance(p, UninitializedParameter):
+                        skipped += 1
+                        continue
+                    if trainable_only and not p.requires_grad:
+                        continue
+                    total += p.numel()
+                return total, skipped
+
+            # Try exact counting first. If it fails, fall back to safe counting.
+            try:
+                vqvae_params = sum(p.numel() for p in vqvae.parameters() if p.requires_grad)
+                gpt_params   = sum(p.numel() for p in gpt.parameters() if p.requires_grad)
+            except ValueError:
+                # Force one explicit warm-up forward to materialize, then retry
+                try:
+                    # reuse last seen shapes for a deterministic warm-up (fast)
+                    zs = gpt.module.sample(x, cond=music_seq, shift=getattr(config, 'sample_shift', None))
+                    _  = vqvae.module.decode(zs)
+                    vqvae_params = sum(p.numel() for p in vqvae.parameters() if p.requires_grad)
+                    gpt_params   = sum(p.numel() for p in gpt.parameters() if p.requires_grad)
+                except ValueError:
+                    # Still lazy somewhere -> safe lower-bound count
+                    vqvae_params, vq_s = count_params_safe(vqvae)
+                    gpt_params,   g_s  = count_params_safe(gpt)
+                    print(f"[param count] Skipped uninitialized tensors -> VQVAE: {vq_s}, GPT: {g_s}")
+
+            total_params = vqvae_params + gpt_params
+            print(f"VQVAE params: {vqvae_params:,}")
+            print(f"GPT params:   {gpt_params:,}")
+            print(f"Total params: {total_params:,} (~{round(total_params/1e6)}M)")
 
             visualizeAndWrite(results, config, self.evaldir, self.dance_names, epoch_tested, quants_out)
     def visgt(self,):
@@ -620,7 +661,7 @@ class AC():
     def _dir_setting(self):
         data = self.config.data
         self.expname = self.config.expname
-        self.experiment_dir = os.path.join("./", "experiments")
+        self.experiment_dir = '/data/van/Dance/Bailando_new/experiments'
         self.expdir = os.path.join(self.experiment_dir, self.expname)
 
         if not os.path.exists(self.expdir):
@@ -696,11 +737,28 @@ def prepare_dataloader(music_data, dance_data, beat_data, batch_size, interval):
         batch_size=batch_size,
         # shuffle=True,
         sampler=sampler,
-        pin_memory=True
-                # collate_fn=paired_collate_fn,
+        pin_memory=True,
+        collate_fn=safe_collate
     )
 
     return data_loader
+
+def safe_collate(batch):
+    filtered_batch = []
+    for sample in batch:
+        if sample is None:
+            continue
+        if isinstance(sample, (tuple, list)):
+            if all(isinstance(x, torch.Tensor) and x.numel() > 0 for x in sample):
+                filtered_batch.append(sample)
+        elif isinstance(sample, torch.Tensor):
+            if sample.numel() > 0:
+                filtered_batch.append(sample)
+
+    if not filtered_batch:
+        return None  # ← safe skip
+
+    return default_collate(filtered_batch)
 
 
 

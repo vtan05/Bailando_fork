@@ -65,8 +65,10 @@ optimizer:
 # schedular: []
 data:
     name: aist   
-    train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
-    test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
+    # train_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/train
+    # test_dir: /data/van/Dance/Bailando_new/data/finedance/data_split/test
+    train_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/train
+    test_dir: /data/van/Dance/Bailando_new/data/motorica/data_split/test
 
     seq_len: 240
     data_type: None
@@ -91,6 +93,7 @@ sample_code_length: 150
 sample_code_rate: 8
 # analysis_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # analysis_sequence: [[4, 5, 4 , 5, 4, 1, 4, 1, 5, 2, 4, 2, 5, 3, 4, 3, 5,]]
+# init_weight: '/data/van/Dance/Bailando_new/experiments/sep_vqvae/ckpt/epoch_500.pt'
 init_weight: '/data/van/Dance/Bailando_new/experiments/sep_vqvae/ckpt/epoch_500.pt'
 
 analysis_pair: [[73, 346], [440, 102]]

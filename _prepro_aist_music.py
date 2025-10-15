@@ -16,8 +16,8 @@ from extractor import FeatureExtractor
 import torch
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_video_dir', type=str, default='/data/van/Dance/Bailando_new/data/motorica/wav')
-parser.add_argument('--store_dir', type=str, default='/data/van/Dance/Bailando_new/data/motorica/music_feat_7.5fps')
+parser.add_argument('--input_video_dir', type=str, default='/data/van/Dance/Bailando_new/data/motorica_npy/wav')
+parser.add_argument('--store_dir', type=str, default='/data/van/Dance/Bailando_new/data/motorica_npy/music_feat_7.5fps')
 parser.add_argument('--sampling_rate', type=int, default=15360*2/8)
 args = parser.parse_args()
 store_dir = args.store_dir
