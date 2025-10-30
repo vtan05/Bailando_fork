@@ -80,7 +80,7 @@ def measure_jitter_npy(dir:str, fps:int):
 
 if __name__ == "__main__":
 
-    fps = 24 # for finedance
+    fps = 30 
     data_dir = r"/data/van/Dance/Bailando_new/experiments/actor_critic/eval/pkl/ep000010"
     measure_jitter_npy(data_dir, fps)
     
